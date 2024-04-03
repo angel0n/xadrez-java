@@ -19,10 +19,11 @@ public class Pawn extends PecaBase{
 		
 		Jogada avancoNormal = obterAvancosNormais(tabuleiro);
 		Jogada avancoDuplo =  obterAvancosDuplos(tabuleiro);
-		
+		List<Jogada> capturas = obterCapturas(tabuleiro);
 		
 		if(avancoNormal != null) jogadasPermitidas.add(avancoNormal);
 		if(avancoDuplo != null) jogadasPermitidas.add(avancoDuplo);
+		if(capturas.size() > 0 ) jogadasPermitidas.addAll(capturas);
 		
 		return jogadasPermitidas;
 	}
@@ -75,6 +76,53 @@ public class Pawn extends PecaBase{
 		}
 		
 		return null;
+	}
+	
+	private List<Jogada> obterCapturas(List<List<PecaBase>> tabuleiro) {
+		int linha = getPosicao().getLinha();
+		int coluna = getPosicao().getColuna();
+		List<Jogada> jogadas = new ArrayList<>();
+		
+		if(getJogador().equals(Jogadores.BRANCO)) {
+			if(linha < 7) {
+				if(coluna < 7 ) {
+					Pecas pecaCapturadaDireita = tabuleiro.get(linha + 1).get(coluna + 1).getPeca();
+					if(pecaCapturadaDireita.getNome().endsWith("B")) {
+						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha + 1, coluna + 1));
+						jogadas.add(jogada);
+					}
+				}
+				
+				if(coluna > 0) {
+					Pecas pecaCapturadaEsquerda = tabuleiro.get(linha + 1).get(coluna - 1).getPeca();
+					if(pecaCapturadaEsquerda.getNome().endsWith("B")) {
+						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha + 1, coluna - 1));
+						jogadas.add(jogada);
+					}
+				}
+			}
+		}
+		
+		if(getJogador().equals(Jogadores.PRETO)) {
+			if(linha > 0) {
+				if(coluna < 7 ) {
+					Pecas pecaCapturadaDireita = tabuleiro.get(linha - 1).get(coluna + 1).getPeca();
+					if(pecaCapturadaDireita.getNome().endsWith("B")) {
+						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha - 1, coluna + 1));
+						jogadas.add(jogada);
+					}
+				}
+				
+				if(coluna > 0) {
+					Pecas pecaCapturadaEsquerda = tabuleiro.get(linha - 1).get(coluna - 1).getPeca();
+					if(pecaCapturadaEsquerda.getNome().endsWith("B")) {
+						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha - 1, coluna - 1));
+						jogadas.add(jogada);
+					}
+				}
+			}
+		}
+		return jogadas;
 	}
 	
 }
