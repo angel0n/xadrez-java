@@ -59,7 +59,9 @@ public class Pawn extends PecaBase{
 		
 		if(getJogador().equals(Jogadores.BRANCO)) {
 			if(linha == 1) {
-				if(tabuleiro.get(linha + 2).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE)) {
+				Boolean casaDestino = tabuleiro.get(linha + 2).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE);
+				Boolean casaPassagem = tabuleiro.get(linha + 1).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE);
+				if(casaDestino && casaPassagem) {
 					Posicao posicaoDestino = new Posicao(linha + 2, coluna);
 					return new Jogada(getPosicao(), posicaoDestino);
 				}
@@ -68,7 +70,9 @@ public class Pawn extends PecaBase{
 		
 		if(getJogador().equals(Jogadores.PRETO)) {
 			if(linha == 6) {
-				if(tabuleiro.get(linha - 2).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE)) {
+				Boolean casaDestino = tabuleiro.get(linha - 2).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE);
+				Boolean casaPassagem = tabuleiro.get(linha - 1).get(coluna).getPeca().equals(Pecas.EMPTY_HOUSE);
+				if(casaDestino && casaPassagem) {
 					Posicao posicaoDestino = new Posicao(linha - 2, coluna);
 					return new Jogada(getPosicao(), posicaoDestino);
 				}
@@ -107,7 +111,7 @@ public class Pawn extends PecaBase{
 			if(linha > 0) {
 				if(coluna < 7 ) {
 					Pecas pecaCapturadaDireita = tabuleiro.get(linha - 1).get(coluna + 1).getPeca();
-					if(pecaCapturadaDireita.getNome().endsWith("B")) {
+					if(pecaCapturadaDireita.getNome().endsWith("W")) {
 						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha - 1, coluna + 1));
 						jogadas.add(jogada);
 					}
@@ -115,7 +119,7 @@ public class Pawn extends PecaBase{
 				
 				if(coluna > 0) {
 					Pecas pecaCapturadaEsquerda = tabuleiro.get(linha - 1).get(coluna - 1).getPeca();
-					if(pecaCapturadaEsquerda.getNome().endsWith("B")) {
+					if(pecaCapturadaEsquerda.getNome().endsWith("W")) {
 						Jogada jogada = new Jogada(getPosicao(), new Posicao(linha - 1, coluna - 1));
 						jogadas.add(jogada);
 					}
