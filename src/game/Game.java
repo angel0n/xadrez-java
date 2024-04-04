@@ -76,6 +76,7 @@ public class Game {
 			}
 		}
 		
+		setJogadasPossiveis(jogadasPossiveis);
 		System.out.println("Numero de jogadas Possiveis: " + jogadasPossiveis.size());
 	}
 
