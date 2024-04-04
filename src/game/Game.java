@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import game.enums.Jogadores;
 import game.enums.Pecas;
@@ -26,7 +25,7 @@ public class Game {
 	public Game(Boolean jogando){
 		this.setJogando(jogando);
 		setJogador(Jogadores.BRANCO);
-		tabuleiroInicial();
+		tabuleiroInicialTeste();
 	}
 	
 	private void tabuleiroInicial() {
@@ -40,6 +39,27 @@ public class Game {
 		List<PecaBase> linha3 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha2 = List.of(new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,0)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,1)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,2)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,3)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,4)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,5)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,6)), new Pawn(Pecas.PAWN_WHITE, Jogadores.BRANCO, new Posicao(1,7)));
 		List<PecaBase> linha1 = List.of(new Rook(Pecas.ROOK_WHITE, Jogadores.BRANCO, new Posicao(0, 0)), new Knight(Pecas.KNIGHT_WHITE, Jogadores.BRANCO, new Posicao(0, 1)), new Bishop(Pecas.BISHOP_WHITE, Jogadores.BRANCO, new Posicao(0, 2)), new King(Pecas.KING_WHITE, Jogadores.BRANCO, new Posicao(0, 3)), new Queen(Pecas.QUEEN_WHITE, Jogadores.BRANCO, new Posicao(0, 4)), new Bishop(Pecas.BISHOP_WHITE, Jogadores.BRANCO, new Posicao(0, 5)), new Knight(Pecas.KNIGHT_WHITE, Jogadores.BRANCO, new Posicao(0, 6)), new Rook(Pecas.ROOK_WHITE, Jogadores.BRANCO, new Posicao(0, 7)));
+		tabuleiro.add(linha1);
+		tabuleiro.add(linha2);
+		tabuleiro.add(linha3);
+		tabuleiro.add(linha4);
+		tabuleiro.add(linha5);
+		tabuleiro.add(linha6);
+		tabuleiro.add(linha7);
+		tabuleiro.add(linha8);
+	}
+	
+	private void tabuleiroInicialTeste() {
+		if(this.tabuleiro == null) this.tabuleiro = new ArrayList<List<PecaBase>>();
+
+		List<PecaBase> linha8 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha7 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha6 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha5 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha4 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha3 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha2 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha1 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		tabuleiro.add(linha1);
 		tabuleiro.add(linha2);
 		tabuleiro.add(linha3);
