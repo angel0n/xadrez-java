@@ -25,7 +25,7 @@ public class Game {
 	public Game(Boolean jogando){
 		this.setJogando(jogando);
 		setJogador(Jogadores.BRANCO);
-		tabuleiroInicialTeste();
+		tabuleiroInicial();
 	}
 	
 	private void tabuleiroInicial() {
@@ -49,13 +49,14 @@ public class Game {
 		tabuleiro.add(linha8);
 	}
 	
+	@SuppressWarnings("unused")
 	private void tabuleiroInicialTeste() {
 		if(this.tabuleiro == null) this.tabuleiro = new ArrayList<List<PecaBase>>();
 
 		List<PecaBase> linha8 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha7 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha6 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
-		List<PecaBase> linha5 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new King(Pecas.KING_BLACK, Jogadores.PRETO, new Posicao(4, 3)),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
+		List<PecaBase> linha5 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new Queen(Pecas.QUEEN_BLACK, Jogadores.PRETO, new Posicao(4, 3)),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha4 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha3 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());
 		List<PecaBase> linha2 = List.of(new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse(),new EmptyHouse());

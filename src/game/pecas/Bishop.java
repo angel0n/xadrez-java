@@ -75,7 +75,7 @@ public class Bishop extends PecaBase{
 		Boolean EsquerdaBloqueada = false;
 		for(int i = 1; i <= 7; i++) {
 			int novaLinha = linha - i;
-			if(novaLinha > 7 ) break;
+			if(novaLinha < 0 ) break;
 			
 			if((coluna + i) <= 7 && !direitaBloqueada) {
 				Pecas pecaCapturada = tabuleiro.get(novaLinha).get(coluna + i).getPeca();	
