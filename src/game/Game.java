@@ -6,6 +6,7 @@ import java.util.List;
 import game.enums.Jogadores;
 import game.enums.Pecas;
 import game.movimentacao.Jogada;
+import game.movimentacao.JogadaRealizada;
 import game.movimentacao.Posicao;
 import game.pecas.Bishop;
 import game.pecas.EmptyHouse;
@@ -21,11 +22,13 @@ public class Game {
 	private List<List<PecaBase>> tabuleiro;
 	private Jogadores jogador;
 	private List<Jogada> jogadasPossiveis;
+	private List<JogadaRealizada> jogadasRealizadas;
 	
 	public Game(Boolean jogando){
 		this.setJogando(jogando);
 		setJogador(Jogadores.BRANCO);
 		tabuleiroInicial();
+		setJogadasRealizadas(new ArrayList<JogadaRealizada>());
 	}
 	
 	private void tabuleiroInicial() {
@@ -107,6 +110,10 @@ public class Game {
 				setJogando(false);
 				return;
 			}
+			if(movimento.equals("voltar")) {
+				desfazerUltimoMovimento();
+				return;
+			}
 			if(movimento.length() != 4) {
 				throw new Exception();
 			}
@@ -133,9 +140,50 @@ public class Game {
 			
 		} catch (Exception e) {
 			System.out.println("Movimento invalido!");
-			System.out.println("Movimentos Possíveis:");
-			System.out.println(jogadasPossiveis.toString());
 		}
+	}
+	
+	public void desfazerUltimoMovimento() {
+		try {
+			if(jogadasRealizadas.size() <= 0 ) throw new Exception();
+			
+			JogadaRealizada jogada = jogadasRealizadas.get(jogadasRealizadas.size() - 1);
+			List<List<PecaBase>> novoTabuleiro = new ArrayList<List<PecaBase>>(tabuleiro);
+			
+			jogada.getPecaCapturada().setPosicao(jogada.getJogada().getPosicaoFinal());
+			jogada.getPecaMovida().setPosicao(jogada.getJogada().getPosicaoInicial());
+			
+			if(jogada.getJogada().getPosicaoInicial().getLinha() != jogada.getJogada().getPosicaoFinal().getLinha()) {
+				List<PecaBase> linhaOrigem = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getJogada().getPosicaoInicial().getLinha()));
+				List<PecaBase> linhaDestinho = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getJogada().getPosicaoFinal().getLinha()));
+				
+				linhaOrigem.set(jogada.getJogada().getPosicaoInicial().getColuna(), jogada.getPecaMovida());
+				linhaDestinho.set(jogada.getJogada().getPosicaoFinal().getColuna(), jogada.getPecaCapturada());
+				
+				novoTabuleiro.set(jogada.getJogada().getPosicaoInicial().getLinha(), linhaOrigem);
+				novoTabuleiro.set(jogada.getJogada().getPosicaoFinal().getLinha(), linhaDestinho);
+			}else {
+				List<PecaBase> linha = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getJogada().getPosicaoInicial().getLinha()));
+				
+				linha.set(jogada.getJogada().getPosicaoInicial().getColuna(), jogada.getPecaMovida());
+				linha.set(jogada.getJogada().getPosicaoFinal().getColuna(), jogada.getPecaCapturada());
+				
+				novoTabuleiro.set(jogada.getJogada().getPosicaoInicial().getLinha(), linha);
+			}
+			
+			this.tabuleiro = novoTabuleiro;
+			jogadasRealizadas.remove(jogadasRealizadas.size() - 1);
+			
+			buscarJogadasPossiveis();
+			trocaJogador();
+			desenhaTabuleiro();
+		} catch (Exception e) {
+			System.out.println("Não foi possível desfazer o ultimo movimento!");
+		}
+	}
+	
+	public void exibirTodasAsJogadasRealizadas() {
+		System.out.print(jogadasRealizadas.toString());
 	}
 	
 	private void trocaJogador() {
@@ -161,6 +209,7 @@ public class Game {
 	
 	private void atualizaPosicaoTabuleiro(Jogada jogada ) {
 		PecaBase pecaSelecionada = tabuleiro.get(jogada.getPosicaoInicial().getLinha()).get(jogada.getPosicaoInicial().getColuna());
+		PecaBase pecaCapturada = tabuleiro.get(jogada.getPosicaoFinal().getLinha()).get(jogada.getPosicaoFinal().getColuna()); 
 		pecaSelecionada.setPosicao(jogada.getPosicaoFinal());
 		List<List<PecaBase>> novoTabuleiro = new ArrayList<List<PecaBase>>(tabuleiro);
 		
@@ -182,6 +231,9 @@ public class Game {
 		}
 		
 		this.tabuleiro = novoTabuleiro;
+		
+		JogadaRealizada jogadaRealizada = new JogadaRealizada(jogada, pecaSelecionada, pecaCapturada);
+		this.jogadasRealizadas.add(jogadaRealizada);
 	}
 	
 	private Posicao stringToPosicao(String casa) throws Exception {
@@ -220,5 +272,13 @@ public class Game {
 
 	public void setJogadasPossiveis(List<Jogada> jogadasPossiveis) {
 		this.jogadasPossiveis = jogadasPossiveis;
+	}
+
+	public List<JogadaRealizada> getJogadasRealizadas() {
+		return jogadasRealizadas;
+	}
+
+	public void setJogadasRealizadas(List<JogadaRealizada> jogadasRealizadas) {
+		this.jogadasRealizadas = jogadasRealizadas;
 	}
 }
