@@ -28,4 +28,10 @@ public class Posicao {
 		if(coluna < 0) coluna = 0;
 		this.coluna = coluna;
 	}
+	
+	public boolean equals(Posicao outher) {
+		Boolean linhaEqual = this.getLinha() == outher.getLinha();
+		Boolean colunaEqual = this.getColuna() == outher.getColuna();
+		return linhaEqual && colunaEqual;
+	}
 }

@@ -29,4 +29,11 @@ public class Jogada {
 	public String toString() {
 		return "(" + this.posicaoInicial.getLinha() + "," + this.posicaoInicial.getColuna() + ") (" + this.posicaoFinal.getLinha() + "," + this.posicaoFinal.getColuna() + ")";
 	}
+	
+	public boolean equals(Jogada outher) {
+		Boolean posicaoInicialEqual = this.getPosicaoInicial().equals(outher.getPosicaoInicial());
+		Boolean posicaoFinalEqual = this.getPosicaoFinal().equals(outher.getPosicaoFinal());
+		
+		return posicaoInicialEqual && posicaoFinalEqual;
+	}
 }

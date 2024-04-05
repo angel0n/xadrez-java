@@ -100,6 +100,72 @@ public class Game {
 		setJogadasPossiveis(jogadasPossiveis);
 		System.out.println("Numero de jogadas Possiveis: " + jogadasPossiveis.size());
 	}
+	
+	public void realizarMovimentacao(String movimento) {
+		try {
+			if(movimento.length() != 4) {
+				throw new Exception();
+			}
+			
+			String casaInicial = movimento.substring(0, 2).toUpperCase();
+			String casaFinal = movimento.substring(2).toUpperCase();
+			
+			Posicao posicaoInicial = stringToPosicao(casaInicial);
+			Posicao posicaoFinal = stringToPosicao(casaFinal);
+			
+			Jogada jogada = new Jogada(posicaoInicial, posicaoFinal);
+			
+			Jogada jogadaSelecionada =  null;
+			
+			for(Jogada jogadaPossivel : getJogadasPossiveis()) {
+				if(jogadaPossivel.equals(jogada)){
+					jogadaSelecionada = jogadaPossivel;
+				}
+			}
+			
+			if(jogadaSelecionada == null) {
+				throw new Exception();
+			}
+			
+			PecaBase pecaSelecionada = tabuleiro.get(jogadaSelecionada.getPosicaoInicial().getLinha()).get(jogadaSelecionada.getPosicaoInicial().getColuna());
+			pecaSelecionada.setPosicao(jogadaSelecionada.getPosicaoFinal());
+			
+			List<List<PecaBase>> novoTabuleiro = new ArrayList<List<PecaBase>>(tabuleiro);
+			
+			List<PecaBase> linhaOrigem = new ArrayList<PecaBase>(novoTabuleiro.get(jogadaSelecionada.getPosicaoInicial().getLinha()));
+			List<PecaBase> linhaDestinho = new ArrayList<PecaBase>(novoTabuleiro.get(jogadaSelecionada.getPosicaoFinal().getLinha()));
+			
+			linhaOrigem.set(jogadaSelecionada.getPosicaoInicial().getColuna(), new EmptyHouse());
+			linhaDestinho.set(jogadaSelecionada.getPosicaoFinal().getColuna(), pecaSelecionada);
+			
+			novoTabuleiro.set(jogadaSelecionada.getPosicaoInicial().getLinha(), linhaOrigem);
+			novoTabuleiro.set(jogadaSelecionada.getPosicaoFinal().getLinha(), linhaDestinho);
+			
+			this.tabuleiro = novoTabuleiro;
+			
+			desenhaTabuleiro();
+			buscarJogadasPossiveis();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Movimento invalido!");
+		}
+	}
+	
+	private Posicao stringToPosicao(String casa) throws Exception {
+		char colunaAlpha = casa.charAt(0);
+		int linha = Integer.parseInt(casa.substring(1)) - 1 ;
+		List<Character> colunasValidas = List.of('A','B','C','D','E','F','G','H');
+		
+		if(!colunasValidas.contains(colunaAlpha) || linha < 0 || linha > 7) {
+			throw new Exception();
+		}
+		
+		int coluna = colunasValidas.indexOf(colunaAlpha);
+		
+		return new Posicao(linha, coluna);
+	}
 
 	public Boolean getJogando() {
 		return jogando;
