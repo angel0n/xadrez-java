@@ -53,7 +53,7 @@ public class Bishop extends PecaBase{
 			if((coluna - i) >= 0 && !EsquerdaBloqueada) {
 				Pecas pecaCapturada = tabuleiro.get(novaLinha).get(coluna - i).getPeca();
 				if(pecaCapturada.equals(Pecas.EMPTY_HOUSE) || pecaCapturada.getNome().endsWith(inimigo)) {
-					Jogada jogada = new Jogada(getPosicao(), new Posicao(novaLinha, coluna + i));
+					Jogada jogada = new Jogada(getPosicao(), new Posicao(novaLinha, coluna - i));
 					jogadas.add(jogada);
 				}
 				if(!pecaCapturada.equals(Pecas.EMPTY_HOUSE)) {
@@ -70,7 +70,9 @@ public class Bishop extends PecaBase{
 		int coluna = getPosicao().getColuna();
 		String inimigo = getJogador().equals(Jogadores.BRANCO) ? "B" : "W";
 		List<Jogada> jogadas = new ArrayList<Jogada>();
-		
+		if(linha == 7) {
+			String teste ="";
+		}
 		Boolean direitaBloqueada = false;
 		Boolean EsquerdaBloqueada = false;
 		for(int i = 1; i <= 7; i++) {
@@ -92,7 +94,7 @@ public class Bishop extends PecaBase{
 			if((coluna - i) >= 0 && !EsquerdaBloqueada) {
 				Pecas pecaCapturada = tabuleiro.get(novaLinha).get(coluna - i).getPeca();
 				if(pecaCapturada.equals(Pecas.EMPTY_HOUSE) || pecaCapturada.getNome().endsWith(inimigo)) {
-					Jogada jogada = new Jogada(getPosicao(), new Posicao(novaLinha, coluna + i));
+					Jogada jogada = new Jogada(getPosicao(), new Posicao(novaLinha, coluna - i));
 					jogadas.add(jogada);
 				}
 				if(!pecaCapturada.equals(Pecas.EMPTY_HOUSE)) {

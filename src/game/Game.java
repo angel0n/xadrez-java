@@ -103,6 +103,10 @@ public class Game {
 	
 	public void realizarMovimentacao(String movimento) {
 		try {
+			if(movimento.equals("exit")) {
+				setJogando(false);
+				return;
+			}
 			if(movimento.length() != 4) {
 				throw new Exception();
 			}
@@ -114,43 +118,70 @@ public class Game {
 			Posicao posicaoFinal = stringToPosicao(casaFinal);
 			
 			Jogada jogada = new Jogada(posicaoInicial, posicaoFinal);
+			Jogada jogadaSelecionada = buscaJogadaSelecionada(jogada);
 			
-			Jogada jogadaSelecionada =  null;
+			PecaBase pecaSelecionada = tabuleiro.get(jogadaSelecionada.getPosicaoInicial().getLinha()).get(jogadaSelecionada.getPosicaoInicial().getColuna());
 			
-			for(Jogada jogadaPossivel : getJogadasPossiveis()) {
-				if(jogadaPossivel.equals(jogada)){
-					jogadaSelecionada = jogadaPossivel;
-				}
-			}
-			
-			if(jogadaSelecionada == null) {
+			if(!pecaSelecionada.getJogador().equals(getJogador())) {
 				throw new Exception();
 			}
 			
-			PecaBase pecaSelecionada = tabuleiro.get(jogadaSelecionada.getPosicaoInicial().getLinha()).get(jogadaSelecionada.getPosicaoInicial().getColuna());
-			pecaSelecionada.setPosicao(jogadaSelecionada.getPosicaoFinal());
-			
-			List<List<PecaBase>> novoTabuleiro = new ArrayList<List<PecaBase>>(tabuleiro);
-			
-			List<PecaBase> linhaOrigem = new ArrayList<PecaBase>(novoTabuleiro.get(jogadaSelecionada.getPosicaoInicial().getLinha()));
-			List<PecaBase> linhaDestinho = new ArrayList<PecaBase>(novoTabuleiro.get(jogadaSelecionada.getPosicaoFinal().getLinha()));
-			
-			linhaOrigem.set(jogadaSelecionada.getPosicaoInicial().getColuna(), new EmptyHouse());
-			linhaDestinho.set(jogadaSelecionada.getPosicaoFinal().getColuna(), pecaSelecionada);
-			
-			novoTabuleiro.set(jogadaSelecionada.getPosicaoInicial().getLinha(), linhaOrigem);
-			novoTabuleiro.set(jogadaSelecionada.getPosicaoFinal().getLinha(), linhaDestinho);
-			
-			this.tabuleiro = novoTabuleiro;
-			
+			atualizaPosicaoTabuleiro(jogadaSelecionada);
 			desenhaTabuleiro();
 			buscarJogadasPossiveis();
-			
+			trocaJogador();
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Movimento invalido!");
+			System.out.println("Movimentos Possíveis:");
+			System.out.println(jogadasPossiveis.toString());
 		}
+	}
+	
+	private void trocaJogador() {
+		if(getJogador().equals(Jogadores.BRANCO)) {
+			setJogador(Jogadores.PRETO);
+		}else {
+			setJogador(Jogadores.BRANCO);
+		}
+	}
+	
+	private Jogada buscaJogadaSelecionada(Jogada jogada) throws Exception {
+		Jogada jogadaSelecionada =  null;
+		for(Jogada jogadaPossivel : getJogadasPossiveis()) {
+			if(jogadaPossivel.equals(jogada)){
+				jogadaSelecionada = jogadaPossivel;
+			}
+		}
+		if(jogadaSelecionada == null) {
+			throw new Exception();
+		}
+		return jogadaSelecionada;
+	}
+	
+	private void atualizaPosicaoTabuleiro(Jogada jogada ) {
+		PecaBase pecaSelecionada = tabuleiro.get(jogada.getPosicaoInicial().getLinha()).get(jogada.getPosicaoInicial().getColuna());
+		pecaSelecionada.setPosicao(jogada.getPosicaoFinal());
+		List<List<PecaBase>> novoTabuleiro = new ArrayList<List<PecaBase>>(tabuleiro);
+		
+		if(jogada.getPosicaoInicial().getLinha() != jogada.getPosicaoFinal().getLinha()) {
+			List<PecaBase> linhaOrigem = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getPosicaoInicial().getLinha()));
+			List<PecaBase> linhaDestinho = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getPosicaoFinal().getLinha()));
+			
+			linhaOrigem.set(jogada.getPosicaoInicial().getColuna(), new EmptyHouse());
+			linhaDestinho.set(jogada.getPosicaoFinal().getColuna(), pecaSelecionada);
+			
+			novoTabuleiro.set(jogada.getPosicaoInicial().getLinha(), linhaOrigem);
+			novoTabuleiro.set(jogada.getPosicaoFinal().getLinha(), linhaDestinho);
+		}else {
+			List<PecaBase> linha = new ArrayList<PecaBase>(novoTabuleiro.get(jogada.getPosicaoInicial().getLinha()));
+			linha.set(jogada.getPosicaoInicial().getColuna(), new EmptyHouse());
+			linha.set(jogada.getPosicaoFinal().getColuna(), pecaSelecionada);
+			
+			novoTabuleiro.set(jogada.getPosicaoInicial().getLinha(), linha);
+		}
+		
+		this.tabuleiro = novoTabuleiro;
 	}
 	
 	private Posicao stringToPosicao(String casa) throws Exception {
